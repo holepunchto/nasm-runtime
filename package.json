@@ -1,0 +1,76 @@
+{
+  "name": "nasm-runtime",
+  "version": "2.16.3",
+  "description": "Prebuilt NASM binaries for macOS, Linux, and Windows",
+  "exports": {
+    ".": "./index.js",
+    "./package": "./package.json",
+    "./spawn": "./lib/spawn.js"
+  },
+  "bin": {
+    "nasm": "bin/nasm",
+    "ndisasm": "bin/ndisasm"
+  },
+  "files": [
+    "NOTICE",
+    "index.js",
+    "bin",
+    "lib"
+  ],
+  "workspaces": [
+    "npm/*"
+  ],
+  "imports": {
+    "child_process": {
+      "bare": "bare-subprocess",
+      "default": "child_process"
+    },
+    "fs": {
+      "bare": "bare-fs",
+      "default": "fs"
+    },
+    "os": {
+      "bare": "bare-os",
+      "default": "os"
+    },
+    "path": {
+      "bare": "bare-path",
+      "default": "path"
+    }
+  },
+  "scripts": {
+    "format": "prettier --write . && lunte --fix",
+    "lint": "prettier --check . && lunte"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holepunchto/nasm-runtime.git"
+  },
+  "author": "Holepunch",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/holepunchto/nasm-runtime/issues"
+  },
+  "homepage": "https://github.com/holepunchto/nasm-runtime#readme",
+  "dependencies": {
+    "bare-fs": "^4.4.4",
+    "bare-os": "^3.0.1",
+    "bare-path": "^3.0.0",
+    "bare-subprocess": "^6.1.0"
+  },
+  "optionalDependencies": {
+    "nasm-runtime-darwin-arm64": "2.16.3",
+    "nasm-runtime-darwin-x64": "2.16.3",
+    "nasm-runtime-linux-arm64": "2.16.3",
+    "nasm-runtime-linux-x64": "2.16.3",
+    "nasm-runtime-win32-arm64": "2.16.3",
+    "nasm-runtime-win32-x64": "2.16.3"
+  },
+  "devDependencies": {
+    "cmake-bare": "^1.9.0",
+    "cmake-ports": "^1.10.1",
+    "lunte": "^1.6.0",
+    "prettier": "^3.6.2",
+    "prettier-config-holepunch": "^2.0.0"
+  }
+}
