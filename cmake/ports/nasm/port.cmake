@@ -61,9 +61,30 @@ elseif(ANDROID)
   list(APPEND args --with-sysroot=${CMAKE_SYSROOT})
 endif()
 
+if(platform MATCHES "windows")
+  # NASM resolves the embedded manifest against the build directory rather than
+  # the source directory, so the resource compilation only works in tree. The
+  # manifest asks for nothing we need, so skip it rather than reach for whichever
+  # `windres` happens to be on the PATH.
+  list(APPEND env "WINDRES=false")
+
+  # `<stdnoreturn.h>` defines `noreturn` as a macro, which the Windows headers
+  # then expand inside their own `__declspec(noreturn)`. NASM reaches for the
+  # header only when configure finds it, so hide it.
+  list(APPEND env "ac_cv_header_stdnoreturn_h=no")
+endif()
+
 if(CMAKE_C_COMPILER)
   cmake_path(GET CMAKE_C_COMPILER PARENT_PATH CC_path)
   cmake_path(GET CMAKE_C_COMPILER FILENAME CC_filename)
+
+  # NASM's configure hands the compiler GNU style warning flags, which the MSVC
+  # style driver reads as their MSVC namesakes: `-Wall` becomes `/Wall`, which
+  # is `-Weverything`. The target triple already selects the MSVC ABI, so reach
+  # for the GNU driver from the same toolchain instead.
+  if(WIN32 AND CC_filename MATCHES "clang-cl.exe")
+    set(CC_filename "clang.exe")
+  endif()
 
   list(APPEND env "CC=${CC_filename}")
 
