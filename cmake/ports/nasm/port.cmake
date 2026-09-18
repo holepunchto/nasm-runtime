@@ -67,6 +67,11 @@ if(platform MATCHES "windows")
   # manifest asks for nothing we need, so skip it rather than reach for whichever
   # `windres` happens to be on the PATH.
   list(APPEND env "WINDRES=false")
+
+  # `<stdnoreturn.h>` defines `noreturn` as a macro, which the Windows headers
+  # then expand inside their own `__declspec(noreturn)`. NASM reaches for the
+  # header only when configure finds it, so hide it.
+  list(APPEND env "ac_cv_header_stdnoreturn_h=no")
 endif()
 
 if(CMAKE_C_COMPILER)
