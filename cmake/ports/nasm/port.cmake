@@ -73,6 +73,14 @@ if(CMAKE_C_COMPILER)
   cmake_path(GET CMAKE_C_COMPILER PARENT_PATH CC_path)
   cmake_path(GET CMAKE_C_COMPILER FILENAME CC_filename)
 
+  # NASM's configure hands the compiler GNU style warning flags, which the MSVC
+  # style driver reads as their MSVC namesakes: `-Wall` becomes `/Wall`, which
+  # is `-Weverything`. The target triple already selects the MSVC ABI, so reach
+  # for the GNU driver from the same toolchain instead.
+  if(WIN32 AND CC_filename MATCHES "clang-cl.exe")
+    set(CC_filename "clang.exe")
+  endif()
+
   list(APPEND env "CC=${CC_filename}")
 
   # A compiler without a target of its own is already pointed at the right one,
