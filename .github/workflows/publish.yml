@@ -1,0 +1,63 @@
+name: Publish
+on:
+  push:
+    tags:
+      - v*
+permissions:
+  contents: read
+jobs:
+  prebuild:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            platform: linux
+            arch: x64
+          - os: ubuntu-22.04-arm
+            platform: linux
+            arch: arm64
+          - os: macos-14
+            platform: darwin
+            arch: arm64
+          - os: macos-14
+            platform: darwin
+            arch: x64
+          - os: windows-2022
+            platform: win32
+            arch: x64
+          - os: windows-2022
+            platform: win32
+            arch: arm64
+    runs-on: ${{ matrix.os }}
+    name: Build / ${{ matrix.platform }}-${{ matrix.arch }}
+    steps:
+      - uses: holepunchto/actions/bare-base@v1
+        with:
+          force-install: true
+      - uses: holepunchto/actions/compile-prebuilds@v1
+        with:
+          platform: ${{ matrix.platform }}
+          arch: ${{ matrix.arch }}
+          upload: true
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    environment:
+      name: npm
+    needs: prebuild
+    name: Publish
+    steps:
+      - uses: holepunchto/actions/node-base@v1
+        with:
+          force-install: true
+      - uses: holepunchto/actions/download-prebuilds@v1
+        with:
+          prefix: npm
+      - run: npm run prepack --workspaces
+      - uses: holepunchto/actions/publish@v1
+        with:
+          workspaces: true
+          include-workspace-root: true
