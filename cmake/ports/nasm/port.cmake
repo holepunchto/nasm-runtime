@@ -61,6 +61,14 @@ elseif(ANDROID)
   list(APPEND args --with-sysroot=${CMAKE_SYSROOT})
 endif()
 
+if(platform MATCHES "windows")
+  # NASM resolves the embedded manifest against the build directory rather than
+  # the source directory, so the resource compilation only works in tree. The
+  # manifest asks for nothing we need, so skip it rather than reach for whichever
+  # `windres` happens to be on the PATH.
+  list(APPEND env "WINDRES=false")
+endif()
+
 if(CMAKE_C_COMPILER)
   cmake_path(GET CMAKE_C_COMPILER PARENT_PATH CC_path)
   cmake_path(GET CMAKE_C_COMPILER FILENAME CC_filename)
