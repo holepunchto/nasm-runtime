@@ -1,0 +1,43 @@
+{
+  "name": "nasm-runtime-linux-arm64",
+  "version": "2.16.3",
+  "description": "The Linux ARM 64-bit binaries for NASM",
+  "exports": {
+    ".": "./index.js",
+    "./package": "./package.json"
+  },
+  "bin": {
+    "nasm": "bin/nasm",
+    "ndisasm": "bin/ndisasm"
+  },
+  "files": [
+    "NOTICE",
+    "index.js",
+    "bin"
+  ],
+  "assets": [
+    "bin"
+  ],
+  "scripts": {
+    "prepack": "node ../../prepack.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holepunchto/nasm-runtime.git"
+  },
+  "author": "Holepunch",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/holepunchto/nasm-runtime/issues"
+  },
+  "homepage": "https://github.com/holepunchto/nasm-runtime#readme",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "dependencies": {
+    "require-asset": "^1.2.3"
+  }
+}
