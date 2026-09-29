@@ -152,6 +152,8 @@ declare_port(
   nasm
   AUTOTOOLS
   ENTRYPOINT "<SOURCE_DIR>/configure"
+  PATCHES
+    patches/001-include-windows-h.patch
   BYPRODUCTS
     bin/nasm${CMAKE_EXECUTABLE_SUFFIX}
     bin/ndisasm${CMAKE_EXECUTABLE_SUFFIX}
