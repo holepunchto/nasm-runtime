@@ -1,6 +1,6 @@
 {
   "name": "nasm-runtime-linux-x64",
-  "version": "2.16.3",
+  "version": "3.2.0",
   "description": "The Linux Intel 64-bit binaries for NASM",
   "exports": {
     ".": "./index.js",

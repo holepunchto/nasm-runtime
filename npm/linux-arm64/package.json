@@ -1,6 +1,6 @@
 {
   "name": "nasm-runtime-linux-arm64",
-  "version": "2.16.3",
+  "version": "3.2.0",
   "description": "The Linux ARM 64-bit binaries for NASM",
   "exports": {
     ".": "./index.js",
