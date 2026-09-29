@@ -1,6 +1,6 @@
 {
   "name": "nasm-runtime-win32-arm64",
-  "version": "2.16.3",
+  "version": "3.2.0",
   "description": "The Windows ARM 64-bit binaries for NASM",
   "exports": {
     ".": "./index.js",

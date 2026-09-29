@@ -3,7 +3,7 @@ include_guard(GLOBAL)
 # The release tarball rather than the repository: it carries `configure` and the
 # sources NASM generates from its instruction tables with Perl, neither of which
 # is committed, so building it needs no autotools and no Perl.
-set(NASM_PORT_VERSION "2.16.03" CACHE STRING "The NASM release to build")
+set(NASM_PORT_VERSION "3.02" CACHE STRING "The NASM release to build")
 
 set(env)
 set(path)
@@ -55,12 +55,6 @@ endif()
 
 list(APPEND args --host=${arch}-${platform})
 
-if(APPLE)
-  list(APPEND args --with-sysroot=${CMAKE_OSX_SYSROOT})
-elseif(ANDROID)
-  list(APPEND args --with-sysroot=${CMAKE_SYSROOT})
-endif()
-
 if(platform MATCHES "windows")
   # NASM resolves the embedded manifest against the build directory rather than
   # the source directory, so the resource compilation only works in tree. The
@@ -94,6 +88,14 @@ if(CMAKE_C_COMPILER)
 
   if(CMAKE_C_COMPILER_TARGET)
     list(APPEND flags "--target=${CMAKE_C_COMPILER_TARGET}")
+  endif()
+
+  # NASM's configure has no `--with-sysroot`, so hand the sysroot to the
+  # compiler directly.
+  if(APPLE AND CMAKE_OSX_SYSROOT)
+    list(APPEND flags "-isysroot ${CMAKE_OSX_SYSROOT}")
+  elseif(ANDROID AND CMAKE_SYSROOT)
+    list(APPEND flags "--sysroot=${CMAKE_SYSROOT}")
   endif()
 
   list(JOIN flags " " cflags)

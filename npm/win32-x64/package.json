@@ -1,6 +1,6 @@
 {
   "name": "nasm-runtime-win32-x64",
-  "version": "2.16.3",
+  "version": "3.2.0",
   "description": "The Windows Intel 64-bit binaries for NASM",
   "exports": {
     ".": "./index.js",
